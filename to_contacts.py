@@ -120,7 +120,6 @@ while count < len(msgToSend):
                 time.sleep(1)
 
                 # Send message
-                # taeget is your target Name and msgToSend is you message
                 input_box.send_keys(f'Hello {target}!')
                 input_box.send_keys(Keys.SHIFT + Keys.ENTER)
                 input_box.send_keys(msgToSend[count][3] + Keys.SPACE)
