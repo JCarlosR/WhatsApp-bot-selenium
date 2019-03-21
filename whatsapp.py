@@ -1,5 +1,4 @@
-# Keep all contacts unique
-# Can save contact with their phone Number
+# Send messages to registered contacts in the phone
 
 # Required packages
 from selenium import webdriver
@@ -23,24 +22,20 @@ def readContacts(fileName):
         lst.append(contact)
     return lst
 
-# Target Contacts, keep them in double colons
-# Not tested on Broadcast
+# Create a list with the contacts (keep them in double quotes)
 targets = readContacts("contacts.xlsx")
+# print(targets)
 
-# can comment out below line
-print(targets)
-
-# Driver to open a browser
+# Open browser via the Chrome web driver
 options = webdriver.ChromeOptions()
 options.add_argument('user-data-dir=D:\Python\WhatsAppBot\DataChrome')
 driver = webdriver.Chrome(options=options)
 
-#link to open a site
+# Open a site
 driver.get("https://web.whatsapp.com/")
 
-# 10 sec wait time to load, if good internet connection is not good then increase the time
-# units in seconds
-# note this time is being used below also
+# Driver wait time (if internet connection is not good then increase the time)
+# This time is used below
 wait = WebDriverWait(driver, 10)
 wait5 = WebDriverWait(driver, 5)
 input("Scan the QR code and then press Enter")
@@ -51,9 +46,9 @@ input("Scan the QR code and then press Enter")
 # 3rd parameter: Seconds (keep it zero)
 # 4th parameter: Text message to send 
 
-# You can use '\n' in the message, it is identified as Enter Key.
+# You can use '\n' in the message. It is identified as Enter Key.
 # Keep a nice gap between successive messages.
-# Keys.SHIFT + Keys.ENTER give a new line effect in your message.
+# Keys.SHIFT + Keys.ENTER give a new line effect.
 msgToSend = [
     (
         22, 7, 0, 
@@ -62,17 +57,17 @@ msgToSend = [
     )
 ]
 
-# Count variable to identify the number of messages to be sent
+# Count variable to identify the number of messages to send
 count = 0
 while count < len(msgToSend):
 
-    # Identify time
+    # Current time
     curTime = datetime.datetime.now()
     curHour = curTime.time().hour
     curMin = curTime.time().minute
     curSec = curTime.time().second
 
-    # if time matches then move further
+    # If time matches then move further
     if msgToSend[count][0]==curHour and msgToSend[count][1]==curMin and msgToSend[count][2]==curSec:
         # variables to track count of success and fails
         success = 0
@@ -82,7 +77,7 @@ while count < len(msgToSend):
         # Iterate over selected contacts
         for target in targets:
             print(sNo, ". Target is: " + target)
-            sNo+=1
+            sNo += 1
             try:
                 # Select the target
                 x_arg = '//span[contains(@title,' + target + ') and contains(@class, "_1wjpf")]'
