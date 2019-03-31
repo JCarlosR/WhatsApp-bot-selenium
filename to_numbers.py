@@ -9,6 +9,9 @@ from selenium.webdriver.common.by import By
 import datetime
 import time
 import openpyxl as excel
+import platform
+
+os = platform.system()
 
 # Read mobile phone numbers from a xlsx file
 def readPhones(fileName):
@@ -21,14 +24,24 @@ def readPhones(fileName):
         phones.append(phone)
     return phones
 
+def initWebDriver():
+	options = webdriver.ChromeOptions()
+	if os == 'Linux':
+		options.add_argument('DataChrome')
+		options.add_argument("--disable-extensions") # disabling extensions
+		options.add_argument("--disable-dev-shm-usage") # overcome limited resource problems
+		options.add_argument("--no-sandbox")	
+		return webdriver.Chrome(options=options, executable_path='/root/Documents/WhatsAppBot/drivers/chromedriver')
+	else: # Windows
+		options.add_argument('user-data-dir=D:\Python\WhatsAppBot\DataChrome')
+		return webdriver.Chrome(options=options)
+
 # Create a list with the numbers (in double quotes)
-targets = readPhones('numbers.xlsx')
+targets = readPhones('D:/Python/WhatsAppBot/numbers.xlsx')
 # print(targets)
 
 # Open browser via the Chrome web driver
-options = webdriver.ChromeOptions()
-options.add_argument('user-data-dir=D:\Python\WhatsAppBot\DataChrome')
-driver = webdriver.Chrome(options=options)
+driver = initWebDriver()
 
 # Driver wait time (if internet connection is not good then increase the time)
 # This time is used in the logic below
@@ -88,6 +101,7 @@ for target in targets:
     except Exception as e:
         print(e)
         failed_list.append(target)
+        input('Failed message - Press Enter to continue')
         pass
 
 print("Successfully sent to: ", success_count)
