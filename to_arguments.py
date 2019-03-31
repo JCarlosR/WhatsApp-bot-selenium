@@ -10,6 +10,21 @@ import datetime
 import time
 import openpyxl as excel
 import sys, getopt
+import platform
+
+os = platform.system()
+
+def initWebDriver():
+    options = webdriver.ChromeOptions()
+    if os == 'Linux':
+        options.add_argument('DataChrome')
+        options.add_argument("--disable-extensions") # disabling extensions
+        options.add_argument("--disable-dev-shm-usage") # overcome limited resource problems
+        options.add_argument("--no-sandbox")    
+        return webdriver.Chrome(options=options, executable_path='/root/Documents/WhatsAppBot/drivers/chromedriver')
+    else: # Windows
+        options.add_argument('user-data-dir=D:\Python\WhatsAppBot\DataChrome')
+        return webdriver.Chrome(options=options)
 
 def read_arguments(args):
 	try:
@@ -43,9 +58,7 @@ print(f'- Target phone number: {phone}')
 print(f'- Message to send: {message}')
 
 # Open browser via the Chrome web driver
-options = webdriver.ChromeOptions()
-options.add_argument('user-data-dir=D:\Python\WhatsAppBot\DataChrome')
-driver = webdriver.Chrome(options=options)
+driver = initWebDriver()
 
 # Driver wait time (if internet connection is not good then increase the time)
 # This time is used in the logic below
