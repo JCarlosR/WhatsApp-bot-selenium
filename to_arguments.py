@@ -18,7 +18,7 @@ os = platform.system()
 def initWebDriver():
     options = webdriver.ChromeOptions()
     if os == 'Linux':
-        options.add_argument('DataChrome')
+        options.add_argument(f'user-data-dir=DataChrome')
         options.add_argument("--disable-extensions") # disabling extensions
         options.add_argument("--disable-dev-shm-usage") # overcome limited resource problems
         options.add_argument("--no-sandbox")    
