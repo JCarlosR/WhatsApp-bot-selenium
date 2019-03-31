@@ -18,13 +18,13 @@ os = platform.system()
 def initWebDriver():
     options = webdriver.ChromeOptions()
     if os == 'Linux':
-        options.add_argument(f'user-data-dir=DataChrome')
+        options.add_argument("--user-data-dir=/var/www/WhatsAppBot/DataChrome")
         options.add_argument("--disable-extensions") # disabling extensions
         options.add_argument("--disable-dev-shm-usage") # overcome limited resource problems
         options.add_argument("--no-sandbox")    
         return webdriver.Chrome(options=options, executable_path=config.executable_path)
     else: # Windows
-        options.add_argument(f'user-data-dir={config.user_data_dir}')
+        options.add_argument(f'--user-data-dir={config.user_data_dir}')
         return webdriver.Chrome(options=options)
 
 def read_arguments(args):
