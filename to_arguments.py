@@ -22,7 +22,14 @@ def initWebDriver():
         options.add_argument("--disable-extensions") # disabling extensions
         options.add_argument("--disable-dev-shm-usage") # overcome limited resource problems
         options.add_argument("--no-sandbox")    
+        options.add_argument("--disable-gpu")
+        #options.add_argument("--profile-directory=Default")
+        options.add_argument("--remote-debugging-port=9222")
+        #options.add_argument("--headless")
+        options.add_argument("user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36")
+        #print(config.executable_path)
         return webdriver.Chrome(options=options, executable_path=config.executable_path)
+
     else: # Windows
         options.add_argument(f'--user-data-dir={config.user_data_dir}')
         return webdriver.Chrome(options=options)
@@ -73,7 +80,7 @@ success = False
 try:
     # Visit the corresponding link
     driver.get(f'https://api.whatsapp.com/send?phone={phone}&text={message}')
-    # time.sleep(2)
+    # time.sleep(1)
 
     send_xpath = '//a[contains(@title, "Share on WhatsApp")]'
     try:
@@ -86,22 +93,19 @@ try:
     send_button = driver.find_element_by_xpath(send_xpath)
     # print('xpath found (send button)')
     send_button.click()
-    print('send button clicked')
+    # print('send button clicked')
     
     # Select the input box        
     input_box_xpath = "//div[@contenteditable='true']"
     input_box = wait17.until(EC.presence_of_element_located((
         By.XPATH, input_box_xpath
     )))
-
     
     # Send message
     input_box.send_keys(Keys.ENTER)
 
-    print(f'Successfully sent message to {phone}\n')
-
     success = True
-    time.sleep(0.5)
+    time.sleep(2)
 
 except Exception as e:
     print(e)
